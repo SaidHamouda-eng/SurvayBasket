@@ -1,13 +1,11 @@
-using SurvayBasket.Api.serviecs;
+
+using SurvayBasket.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDependencies();
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddScoped<EngineMove,ToytaService>();
 
 var app = builder.Build();
 
@@ -17,11 +15,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "My API"));
 }
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
